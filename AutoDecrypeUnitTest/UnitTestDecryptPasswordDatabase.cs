@@ -92,7 +92,7 @@ namespace AutoDecrypeUnitTest
         public void AddOrGetDecryptPassword()
         {
             string testAddress = "mailaddress";
-            string testPassword = "DecryptPasswordDatabase";
+            string testPassword = "decryptPassword";
             DateTime dateDate = DateTime.Now;
 
             DecryptPasswordDatabase db = new DecryptPasswordDatabase();
@@ -105,6 +105,66 @@ namespace AutoDecrypeUnitTest
             Assert.AreEqual(testPassword, recs[0].decryptPassword);
             Assert.AreEqual(dateDate.ToLongDateString(), recs[0].mailSendDataTime.ToLongDateString());
             Assert.AreEqual(dateDate.ToLongTimeString(), recs[0].mailSendDataTime.ToLongTimeString());
+        }
+
+        [TestMethod]
+        public void AddOrGetDecryptPasswordMulti()
+        {
+            string testAddress = "mailaddress";
+            string testPassword = "decryptPassword";
+            DateTime dateDate = DateTime.Now;
+
+            DecryptPasswordDatabase db = new DecryptPasswordDatabase();
+            db.CreateOrReplaceBlankDatabase();
+
+            for (int i = 0; i < 100; i++)
+            {
+                db.AddDecryptPassword(testAddress + i.ToString("0000"),
+                                        testPassword + i.ToString("0000"), 
+                                        dateDate);
+            }
+
+            var recs = db.GetDecryptPassword();
+            Assert.AreEqual(100, recs.Count);
+
+            int recCnt = 0;
+            foreach (var r in recs)
+            {
+                Assert.AreEqual(testAddress + recCnt.ToString("0000"), r.fromMailAddress);
+                Assert.AreEqual(testPassword + recCnt.ToString("0000"), r.decryptPassword);
+                Assert.AreEqual(dateDate.ToLongDateString(), r.mailSendDataTime.ToLongDateString());
+                Assert.AreEqual(dateDate.ToLongTimeString(), r.mailSendDataTime.ToLongTimeString());
+                recCnt++;
+            }
+        }
+
+
+        [TestMethod]
+        public void GetDecryptPasswordList()
+        {
+            string testAddress = "mailaddress";
+            string testPassword = "decryptPassword";
+            DateTime dateDate = DateTime.Now;
+
+            DecryptPasswordDatabase db = new DecryptPasswordDatabase();
+            db.CreateOrReplaceBlankDatabase();
+
+            for (int i = 0; i < 100; i++)
+            {
+                db.AddDecryptPassword(testAddress + i.ToString("0000"),
+                                        testPassword + i.ToString("0000"),
+                                        dateDate);
+            }
+
+            var recs = db.GetPasswordList();
+            Assert.AreEqual(100, recs.Count);
+
+            int recCnt = 0;
+            foreach (var r in recs)
+            {
+                Assert.AreEqual(testPassword + recCnt.ToString("0000"), r);
+                recCnt++;
+            }
         }
     }
 }

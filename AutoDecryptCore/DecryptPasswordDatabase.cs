@@ -22,6 +22,7 @@ namespace AutoDecryptCore
     public class DecryptPasswordDatabase
     {
         string db_file = "password.db3";
+        static private Mutex lockFile = new Mutex(false);
 
         public DecryptPasswordDatabase()
         {
@@ -29,6 +30,8 @@ namespace AutoDecryptCore
 
         public void AddDecryptPassword(string fromMailAddress, string decryptPassword, DateTime mailSendDataTime)
         {
+            lockFile.WaitOne();
+
             using (var conn = CreateConnection())
             {
                 conn.Open();
@@ -46,10 +49,14 @@ namespace AutoDecryptCore
                 }
                 conn.Close();
             }
+
+            lockFile.ReleaseMutex();
         }
 
         public List<DecryptPasswordArticle> GetDecryptPassword()
         {
+            lockFile.WaitOne();
+
             List<DecryptPasswordArticle> passwordList = new List<DecryptPasswordArticle>();
             using (var conn = CreateConnection())
             {
@@ -72,12 +79,16 @@ namespace AutoDecryptCore
                 }
                 conn.Close();
             }
+
+            lockFile.ReleaseMutex();
             return passwordList;
         }
 
 
         public List<string> GetPasswordList()
         {
+            lockFile.WaitOne();
+
             List<string> passwordList = new List<string>();
             using (var conn = CreateConnection())
             {
@@ -95,11 +106,15 @@ namespace AutoDecryptCore
                 }
                 conn.Close();
             }
+
+            lockFile.ReleaseMutex();
             return passwordList;
         }
 
         public void CreateOrReplaceBlankDatabase()
         {
+            lockFile.WaitOne();
+
             RemoveDatabase();
 
             using (var conn = CreateConnection())
@@ -119,10 +134,14 @@ namespace AutoDecryptCore
                 }
                 conn.Close();
             }
+
+            lockFile.ReleaseMutex();
         }
 
         public bool ExistDatabase()
         {
+            lockFile.WaitOne();
+
             bool isSanity = false;
             try
             {
@@ -144,16 +163,22 @@ namespace AutoDecryptCore
             {
 
             }
+
+            lockFile.ReleaseMutex();
             return isSanity;
         }
 
         public void RemoveDatabase()
         {
+            lockFile.WaitOne();
+
             // 既存のファイルを削除する
             if (File.Exists(db_file))
             {
                 File.Delete(db_file);
             }
+
+            lockFile.ReleaseMutex();
         }
 
         private SQLiteConnection CreateConnection()
