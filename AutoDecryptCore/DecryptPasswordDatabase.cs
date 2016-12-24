@@ -175,27 +175,23 @@ namespace AutoDecryptCore
 
         public void RemoveDatabase()
         {
+            if (!ExistDatabase())
+                return;
+
             lockFile.WaitOne();
 
-            // 既存のファイルを削除する
-            if (File.Exists(db_file))
+            using (var conn = CreateConnection())
             {
-                int retryCnt = 0;
-                while (true)
-                { 
-                    try
-                    {
-                        File.Delete(db_file);
-                        break;
-                    }
-                    catch (Exception exp)
-                    {
-                        retryCnt++;
-                        if (retryCnt > 5)
-                            throw exp;
-                        Thread.Sleep(500);
-                    }
+                conn.Open();
+                using (SQLiteCommand command = conn.CreateCommand())
+                {
+                    StringBuilder sql = new StringBuilder();
+                    sql.AppendLine("drop table DecryptPassword;");
+                    command.CommandText = sql.ToString();
+                    command.ExecuteNonQuery();
                 }
+                conn.Close();
+                conn.Dispose();
             }
 
             lockFile.ReleaseMutex();
