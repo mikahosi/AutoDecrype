@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Collections.Generic;
+using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using AutoDecryptCore;
@@ -60,14 +61,16 @@ namespace AutoDecrypeUnitTest
         //
         #endregion
 
-        [TestInitialize()]
-        public void MyTestInitialize()
+        [TestInitialize]
+        public void TestInitialize()
         {
+            Monitor.Enter(IntegrationTestsSynchronization.LockObject);
         }
 
-        [TestCleanup()]
-        public void MyTestCleanup()
+        [TestCleanup]
+        public void TestCleanup()
         {
+            Monitor.Exit(IntegrationTestsSynchronization.LockObject);
         }
 
         [TestMethod]

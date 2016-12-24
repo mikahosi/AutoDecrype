@@ -48,6 +48,7 @@ namespace AutoDecryptCore
                     command.ExecuteNonQuery();
                 }
                 conn.Close();
+                conn.Dispose();
             }
 
             lockFile.ReleaseMutex();
@@ -78,6 +79,7 @@ namespace AutoDecryptCore
                     }
                 }
                 conn.Close();
+                conn.Dispose();
             }
 
             lockFile.ReleaseMutex();
@@ -105,6 +107,7 @@ namespace AutoDecryptCore
                     }
                 }
                 conn.Close();
+                conn.Dispose();
             }
 
             lockFile.ReleaseMutex();
@@ -113,9 +116,9 @@ namespace AutoDecryptCore
 
         public void CreateOrReplaceBlankDatabase()
         {
-            lockFile.WaitOne();
-
             RemoveDatabase();
+
+            lockFile.WaitOne();
 
             using (var conn = CreateConnection())
             {
@@ -133,6 +136,7 @@ namespace AutoDecryptCore
                     command.ExecuteNonQuery();
                 }
                 conn.Close();
+                conn.Dispose();
             }
 
             lockFile.ReleaseMutex();
@@ -157,6 +161,7 @@ namespace AutoDecryptCore
                         isSanity = true;
                     }
                     conn.Close();
+                    conn.Dispose();
                 }
             }
             catch (Exception exp)
@@ -175,7 +180,22 @@ namespace AutoDecryptCore
             // 既存のファイルを削除する
             if (File.Exists(db_file))
             {
-                File.Delete(db_file);
+                int retryCnt = 0;
+                while (true)
+                { 
+                    try
+                    {
+                        File.Delete(db_file);
+                        break;
+                    }
+                    catch (Exception exp)
+                    {
+                        retryCnt++;
+                        if (retryCnt > 5)
+                            throw exp;
+                        Thread.Sleep(500);
+                    }
+                }
             }
 
             lockFile.ReleaseMutex();
