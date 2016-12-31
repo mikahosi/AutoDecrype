@@ -33,6 +33,7 @@ namespace AutoDecryptCore
         /// </summary>
         virtual public void Run()
         {
+
         }
 
         /// <summary>
@@ -104,6 +105,15 @@ namespace AutoDecryptCore
             }
 
             return resultTokens;
+        }
+
+        public void WritePassworList(List<DecryptPasswordArticle> passwords)
+        {
+            DecryptPasswordDatabase db = new DecryptPasswordDatabase();
+            foreach(var rec in passwords)
+            {
+                db.AddDecryptPassword(rec.fromMailAddress, rec.decryptPassword, rec.mailSendDataTime);
+            }
         }
     }
 }
