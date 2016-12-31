@@ -21,8 +21,8 @@ namespace AutoDecryptCore
         public PasswordCrawlerForPop(string srceServerAddress, string srceUserID, string srcePassword)
         {
             serverAddress = srceServerAddress;
-            srceUserID = userID;
-            srcePassword = password;
+            userID = srceUserID;
+            password = srcePassword;
         }
 
         private List<Message> DownloadMessages()
