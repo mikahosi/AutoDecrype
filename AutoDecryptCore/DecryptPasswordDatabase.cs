@@ -35,17 +35,29 @@ namespace AutoDecryptCore
             using (var conn = CreateConnection())
             {
                 conn.Open();
-                using (SQLiteCommand command = conn.CreateCommand())
+                using (SQLiteCommand chkCmd = conn.CreateCommand())
                 {
                     StringBuilder sql = new StringBuilder();
-                    sql.AppendLine("insert into DecryptPassword");
-                    sql.AppendLine("    ( fromMailAddress, decryptPassword, mailSendDataTime )");
-                    sql.AppendLine("    values (?, ?, ?)");
-                    command.CommandText = sql.ToString();
-                    command.Parameters.Add(new SQLiteParameter("fromMailAddress", fromMailAddress));
-                    command.Parameters.Add(new SQLiteParameter("decryptPassword", decryptPassword));
-                    command.Parameters.Add(new SQLiteParameter("mailSendDataTime", mailSendDataTime.ToString("yyyy-MM-dd HH:mm:ss")));
-                    command.ExecuteNonQuery();
+                    sql.Clear();
+                    sql.AppendLine("select count(*) from DecryptPassword");
+                    sql.AppendLine("    where decryptPassword = ?");
+                    chkCmd.CommandText = sql.ToString();
+                    chkCmd.Parameters.Add(new SQLiteParameter("decryptPassword", decryptPassword));
+                    if (0 == (int)chkCmd.ExecuteScalar())
+                    {
+                        using (SQLiteCommand insCmd = conn.CreateCommand())
+                        {
+                            sql.Clear();
+                            sql.AppendLine("insert into DecryptPassword");
+                            sql.AppendLine("    ( fromMailAddress, decryptPassword, mailSendDataTime )");
+                            sql.AppendLine("    values (?, ?, ?)");
+                            insCmd.CommandText = sql.ToString();
+                            insCmd.Parameters.Add(new SQLiteParameter("fromMailAddress", fromMailAddress));
+                            insCmd.Parameters.Add(new SQLiteParameter("decryptPassword", decryptPassword));
+                            insCmd.Parameters.Add(new SQLiteParameter("mailSendDataTime", mailSendDataTime.ToString("yyyy-MM-dd HH:mm:ss")));
+                            insCmd.ExecuteNonQuery();
+                        }
+                    }
                 }
                 conn.Close();
                 conn.Dispose();
@@ -131,6 +143,16 @@ namespace AutoDecryptCore
                     sql.AppendLine("    fromMailAddress TEXT, ");
                     sql.AppendLine("    decryptPassword TEXT, ");
                     sql.AppendLine("    mailSendDataTime TEXT");
+                    sql.AppendLine(")");
+                    command.CommandText = sql.ToString();
+                    command.ExecuteNonQuery();
+                }
+
+                using (SQLiteCommand command = conn.CreateCommand())
+                {
+                    StringBuilder sql = new StringBuilder();
+                    sql.AppendLine("create index DecryptPasswordKey01 ON DecryptPassword (");
+                    sql.AppendLine("    decryptPassword");
                     sql.AppendLine(")");
                     command.CommandText = sql.ToString();
                     command.ExecuteNonQuery();
