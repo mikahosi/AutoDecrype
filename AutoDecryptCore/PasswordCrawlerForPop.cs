@@ -72,11 +72,14 @@ namespace AutoDecryptCore
 
                 foreach (string token in ParsePasswordTokens(bodyText))
                 {
-                    DecryptPasswordArticle newRec = new DecryptPasswordArticle();
-                    newRec.fromMailAddress = message.Headers.From.Address;
-                    newRec.mailSendDataTime = message.Headers.DateSent;
-                    newRec.decryptPassword = token;
-                    parseText.Add(newRec);
+                    if (isCandidatePassword(token))
+                    {
+                        DecryptPasswordArticle newRec = new DecryptPasswordArticle();
+                        newRec.fromMailAddress = message.Headers.From.Address;
+                        newRec.mailSendDataTime = message.Headers.DateSent;
+                        newRec.decryptPassword = token;
+                        parseText.Add(newRec);
+                    }
                 }
             }
 
