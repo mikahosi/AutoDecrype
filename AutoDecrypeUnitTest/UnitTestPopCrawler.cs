@@ -12,6 +12,7 @@ namespace AutoDecrypeUnitTest
         private string serverAddress;
         private string userID;
         private string password;
+        private string lastReceivedMessageID;
 
         private TestContext testContextInstance;
 
@@ -56,18 +57,35 @@ namespace AutoDecrypeUnitTest
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            var reader = File.OpenText("popuser.password");
-            serverAddress = reader.ReadLine();
-            userID = reader.ReadLine();
-            password = reader.ReadLine();
-            reader.Close();
+            using (var reader = File.OpenText("popuser.password"))
+            {
+                serverAddress = reader.ReadLine();
+                userID = reader.ReadLine();
+                password = reader.ReadLine();
+                reader.Close();
+            }
+
+            lastReceivedMessageID = "";
+            if (File.Exists("lastReceivedMessageID.txt"))
+            {
+                using (var reader = File.OpenText("lastReceivedMessageID.txt"))
+                {
+                    lastReceivedMessageID = reader.ReadLine();
+                    reader.Close();
+                }
+            }
         }
 
         [TestMethod]
         public void TestMethodPasswordCrawlerForPop()
         {
             PasswordCrawlerForPop crawler = new PasswordCrawlerForPop(serverAddress, userID, password);
+            crawler.LastReceivedMessageID = lastReceivedMessageID;
             crawler.Run();
+
+            var writer = File.CreateText("lastReceivedMessageID.txt");
+            writer.WriteLine(crawler.LastReceivedMessageID);
+            writer.Close();
         }
     }
 }

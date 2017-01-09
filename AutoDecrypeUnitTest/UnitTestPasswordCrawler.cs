@@ -171,16 +171,16 @@ namespace AutoDecrypeUnitTest
             Assert.AreEqual(1, passwordTokens.Count);
             Assert.AreEqual("abcd0123", passwordTokens[0]);
 
-            passwordTokens = crawler.ParsePasswordTokens("パスワードとしてabcd0123と+-*/::を含む場合");
+            passwordTokens = crawler.ParsePasswordTokens("パスワードとしてabcd0123と-+*/::を含む場合");
             Assert.AreEqual(2, passwordTokens.Count);
             Assert.AreEqual("abcd0123", passwordTokens[0]);
-            Assert.AreEqual("+-*/::", passwordTokens[1]);
+            Assert.AreEqual("-+*/::", passwordTokens[1]);
 
             passwordTokens = crawler.ParsePasswordTokens("パスワードとしてabcd0123と:+-*/を含む場合");
             Assert.AreEqual(3, passwordTokens.Count);
             Assert.AreEqual("abcd0123", passwordTokens[0]);
             Assert.AreEqual(":+-*/", passwordTokens[1]);
-            Assert.AreEqual("+-*/", passwordTokens[1]);
+            Assert.AreEqual("+-*/", passwordTokens[2]);
 
             passwordTokens = crawler.ParsePasswordTokens("全角は０１２３、ａａａａ、ＡＡＡＡ、＋－＊／パスワードとして認識しない");
             Assert.AreEqual(0, passwordTokens.Count);

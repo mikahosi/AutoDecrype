@@ -93,7 +93,7 @@ namespace AutoDecryptCore
         {
             List<string> resultTokens = new List<string>();
 
-            var matchTokens = Regex.Matches(srceText, "[0-9a-zA-Z!\"#$%&'()=~|@`\\[{:\\*\\]};\\+,\\./\\\\\\<\\>?_]+");
+            var matchTokens = Regex.Matches(srceText, "[0-9a-zA-Z!\"#$%&'()=~|@`\\[{:\\*\\]};\\+,\\./\\\\\\<\\>\\?\\-_]+");
             foreach (Match token in matchTokens)
             {
                 resultTokens.Add(token.Value);

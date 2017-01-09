@@ -43,19 +43,23 @@ namespace AutoDecryptCore
                     sql.AppendLine("    where decryptPassword = ?");
                     chkCmd.CommandText = sql.ToString();
                     chkCmd.Parameters.Add(new SQLiteParameter("decryptPassword", decryptPassword));
-                    if (0 == (int)chkCmd.ExecuteScalar())
+                    object recCnt = chkCmd.ExecuteScalar();
+                    if (DBNull.Value != recCnt)
                     {
-                        using (SQLiteCommand insCmd = conn.CreateCommand())
+                        if (0 == Convert.ToInt32(recCnt))
                         {
-                            sql.Clear();
-                            sql.AppendLine("insert into DecryptPassword");
-                            sql.AppendLine("    ( fromMailAddress, decryptPassword, mailSendDataTime )");
-                            sql.AppendLine("    values (?, ?, ?)");
-                            insCmd.CommandText = sql.ToString();
-                            insCmd.Parameters.Add(new SQLiteParameter("fromMailAddress", fromMailAddress));
-                            insCmd.Parameters.Add(new SQLiteParameter("decryptPassword", decryptPassword));
-                            insCmd.Parameters.Add(new SQLiteParameter("mailSendDataTime", mailSendDataTime.ToString("yyyy-MM-dd HH:mm:ss")));
-                            insCmd.ExecuteNonQuery();
+                            using (SQLiteCommand insCmd = conn.CreateCommand())
+                            {
+                                sql.Clear();
+                                sql.AppendLine("insert into DecryptPassword");
+                                sql.AppendLine("    ( fromMailAddress, decryptPassword, mailSendDataTime )");
+                                sql.AppendLine("    values (?, ?, ?)");
+                                insCmd.CommandText = sql.ToString();
+                                insCmd.Parameters.Add(new SQLiteParameter("fromMailAddress", fromMailAddress));
+                                insCmd.Parameters.Add(new SQLiteParameter("decryptPassword", decryptPassword));
+                                insCmd.Parameters.Add(new SQLiteParameter("mailSendDataTime", mailSendDataTime.ToString("yyyy-MM-dd HH:mm:ss")));
+                                insCmd.ExecuteNonQuery();
+                            }
                         }
                     }
                 }

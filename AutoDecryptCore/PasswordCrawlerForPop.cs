@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 using OpenPop;
 using OpenPop.Common;
@@ -17,6 +18,18 @@ namespace AutoDecryptCore
         protected string userID;
         protected string password;
         protected string lastReceivedMessageID;
+
+        public string LastReceivedMessageID
+        {
+            get
+            {
+                return lastReceivedMessageID;
+            }
+            set
+            {
+                lastReceivedMessageID = value;
+            }
+        }
 
         public PasswordCrawlerForPop(string srceServerAddress, string srceUserID, string srcePassword)
         {
@@ -50,12 +63,13 @@ namespace AutoDecryptCore
                 // Most servers give the latest message the highest number
                 for (int i = messageCount; i > 0; i--)
                 {
-                    if (lastReceivedMessageID == uids[i - 1])
+                    if (LastReceivedMessageID == uids[i - 1])
                         break;
 
                     Console.WriteLine("Download Message, {0} / {1}", i, messageCount);
                     Message curtMessage = client.GetMessage(i);
                     allMessages.Add(curtMessage);
+                    LastReceivedMessageID = uids[i - 1];
                 }
                 client.Disconnect();
             }
@@ -68,7 +82,14 @@ namespace AutoDecryptCore
             List<DecryptPasswordArticle> parseText = new List<DecryptPasswordArticle>();
             foreach (var message in allMessages)
             {
-                string bodyText = message.FindFirstPlainTextVersion().BodyEncoding.GetString(message.FindFirstPlainTextVersion().Body);
+                if (null == message.FindFirstPlainTextVersion())
+                    continue;
+
+                var bodyEncodeing = message.FindFirstPlainTextVersion().BodyEncoding;
+                Debug.Write("EncodingName = "); Debug.WriteLine(bodyEncodeing.EncodingName);
+
+                string bodyText = bodyEncodeing.GetString(message.FindFirstPlainTextVersion().Body);
+                Debug.WriteLine("bodyText = "); Debug.WriteLine(bodyText);
 
                 foreach (string token in ParsePasswordTokens(bodyText))
                 {
