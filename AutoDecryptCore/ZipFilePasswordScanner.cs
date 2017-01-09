@@ -54,5 +54,15 @@ namespace AutoDecryptCore
 
             return truePassword;
         }
+
+        public void Decode(string password)
+        {
+            string exportPath = Environment.ExpandEnvironmentVariables("%TEMP%") + "\\AutoDecrypt\\";
+        }
+
+        public void Decode(string exportDir, string password)
+        {
+        }
+
     }
 }
