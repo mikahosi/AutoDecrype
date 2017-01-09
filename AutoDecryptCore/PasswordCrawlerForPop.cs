@@ -69,8 +69,8 @@ namespace AutoDecryptCore
                     Console.WriteLine("Download Message, {0} / {1}", i, messageCount);
                     Message curtMessage = client.GetMessage(i);
                     allMessages.Add(curtMessage);
-                    LastReceivedMessageID = uids[i - 1];
                 }
+                LastReceivedMessageID = uids[messageCount - 1];
                 client.Disconnect();
             }
 
@@ -113,8 +113,12 @@ namespace AutoDecryptCore
         override public void Run()
         {
             List<Message> allMessages = DownloadMessages();
+            if (allMessages.Count == 0)
+                return;
 
             List<DecryptPasswordArticle> parseText = PursePasswordTokens(allMessages);
+            if (parseText.Count == 0)
+                return;
 
             WritePassworList(parseText);
         }

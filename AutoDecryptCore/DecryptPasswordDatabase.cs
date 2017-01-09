@@ -26,6 +26,15 @@ namespace AutoDecryptCore
 
         public DecryptPasswordDatabase()
         {
+            db_file = "password.db3";
+        }
+
+        public DecryptPasswordDatabase(string dbFileName)
+        {
+            if (dbFileName.Length > 0)
+            {
+                db_file = dbFileName;
+            }
         }
 
         public void AddDecryptPassword(string fromMailAddress, string decryptPassword, DateTime mailSendDataTime)

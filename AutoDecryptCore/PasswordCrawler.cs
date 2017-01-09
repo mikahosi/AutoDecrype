@@ -18,6 +18,9 @@ namespace AutoDecryptCore
         public bool hasLargeAlphaChar;
         public bool hasSymbolChar;
 
+        public string PasswordDataFileName { get; set; }
+
+
         public PasswordCrawler()
         {
             minPasswordLength = 4;
@@ -26,6 +29,7 @@ namespace AutoDecryptCore
             hasSmallAlphaChar = false;
             hasLargeAlphaChar = false;
             hasSymbolChar = false;
+            PasswordDataFileName = "";
         }
 
         /// <summary>
@@ -109,7 +113,24 @@ namespace AutoDecryptCore
 
         public void WritePassworList(List<DecryptPasswordArticle> passwords)
         {
-            DecryptPasswordDatabase db = new DecryptPasswordDatabase();
+            string pathname = Environment.ExpandEnvironmentVariables(PasswordDataFileName);
+
+            int lastBackslash = pathname.LastIndexOf("\\");
+            if (lastBackslash >= 0)
+            {
+                string directory = pathname.Substring(0, lastBackslash);
+                if (false == System.IO.Directory.Exists(directory))
+                {
+                    System.IO.Directory.CreateDirectory(directory);
+                }
+            }
+
+            DecryptPasswordDatabase db = new DecryptPasswordDatabase(pathname);
+            if (false == db.ExistDatabase())
+            {
+                db.CreateOrReplaceBlankDatabase();
+            }
+
             foreach(var rec in passwords)
             {
                 db.AddDecryptPassword(rec.fromMailAddress, rec.decryptPassword, rec.mailSendDataTime);

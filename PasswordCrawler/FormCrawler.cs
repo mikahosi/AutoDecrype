@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using System.Configuration;
+using AutoDecryptCore;
 
 namespace PasswordCrawler
 {
@@ -21,14 +22,32 @@ namespace PasswordCrawler
 
         private void backgroundWorkerCrawler_DoWork(object sender, DoWorkEventArgs e)
         {
-
+            PasswordCrawlerForPop craler = new PasswordCrawlerForPop(Properties.Settings.Default.Pop3Server, Properties.Settings.Default.Pop3UserID, Properties.Settings.Default.Pop3Password);
+            craler.LastReceivedMessageID = Properties.Settings.Default.LastMessageID;
+            craler.PasswordDataFileName = Properties.Settings.Default.PasswordDatabase;
+            craler.Run();
+            Properties.Settings.Default.LastMessageID = craler.LastReceivedMessageID;
+            Properties.Settings.Default.Save();
         }
 
+        /// <summary>
+        /// パスワード収集処理が動作していないなら起動する
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void timerKickCrawler_Tick(object sender, EventArgs e)
         {
-
+            if (false == backgroundWorkerCrawler.IsBusy)
+            {
+                backgroundWorkerCrawler.RunWorkerAsync();
+            }
         }
 
+        /// <summary>
+        /// 設定を保存する
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void buttonApply_Click(object sender, EventArgs e)
         {
             Properties.Settings.Default.Pop3Server = textBoxServerAddress.Text;
