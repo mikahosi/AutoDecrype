@@ -128,6 +128,7 @@
             this.Controls.Add(this.label1);
             this.Name = "FormCrawler";
             this.Text = "Password Crawler";
+            this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
             this.ResumeLayout(false);
             this.PerformLayout();
 

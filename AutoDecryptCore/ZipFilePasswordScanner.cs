@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
+using System.IO;
 
 using Ionic.Zip;
 
@@ -46,7 +48,7 @@ namespace AutoDecryptCore
                         loopState.Break();
                     }
                 }
-                catch (BadCrcException exp)
+                catch (Exception exp)
                 {
 
                 }
@@ -55,9 +57,21 @@ namespace AutoDecryptCore
             return truePassword;
         }
 
-        public void Decode(string password)
+        public string Decode(string password)
         {
-            string exportPath = Environment.ExpandEnvironmentVariables("%TEMP%") + "\\AutoDecrypt\\";
+            string exportPath = Environment.ExpandEnvironmentVariables("%TEMP%") + "\\AutoDecrypt\\" + DateTime.Now.ToString("yyyyMMddHHmmss") + "\\";
+            Directory.CreateDirectory(exportPath);
+            ReadOptions readOptions = new ReadOptions();
+            readOptions.Encoding = System.Text.Encoding.GetEncoding("shift_jis");
+            ZipFile zipFile = ZipFile.Read(zipFileName, readOptions);
+            zipFile.Password = password;
+            foreach (string entryName in zipFile.EntryFileNames)
+            {
+                Console.WriteLine(entryName);
+            }
+
+            zipFile.ExtractAll(exportPath, ExtractExistingFileAction.OverwriteSilently);
+            return exportPath;
         }
 
         public void Decode(string exportDir, string password)
