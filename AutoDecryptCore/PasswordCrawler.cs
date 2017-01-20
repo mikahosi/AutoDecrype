@@ -79,7 +79,7 @@ namespace AutoDecryptCore
 
             if (hasSymbolChar)
             {
-                if (false == Regex.IsMatch(srceToken, "[!\"#$%&'()=~|@`\\[{:\\*\\]};+,\\./\\\\\\<\\>?_]"))
+                if (false == Regex.IsMatch(srceToken, "[!\"#$%&'()=~|@`\\[{:\\*\\]};+\\-\\^,\\./\\\\\\<\\>?_]"))
                 {
                     return false;
                 }

@@ -38,6 +38,7 @@
             this.textBoxPassword = new System.Windows.Forms.TextBox();
             this.textBoxServerAddress = new System.Windows.Forms.TextBox();
             this.buttonApply = new System.Windows.Forms.Button();
+            this.buttonReSync = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // backgroundWorkerCrawler
@@ -114,11 +115,21 @@
             this.buttonApply.UseVisualStyleBackColor = true;
             this.buttonApply.Click += new System.EventHandler(this.buttonApply_Click);
             // 
+            // buttonReSync
+            // 
+            this.buttonReSync.Location = new System.Drawing.Point(14, 91);
+            this.buttonReSync.Name = "buttonReSync";
+            this.buttonReSync.Size = new System.Drawing.Size(75, 23);
+            this.buttonReSync.TabIndex = 7;
+            this.buttonReSync.Text = "再同期";
+            this.buttonReSync.UseVisualStyleBackColor = true;
+            // 
             // FormCrawler
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(384, 125);
+            this.Controls.Add(this.buttonReSync);
             this.Controls.Add(this.buttonApply);
             this.Controls.Add(this.textBoxServerAddress);
             this.Controls.Add(this.textBoxPassword);
@@ -144,6 +155,7 @@
         private System.Windows.Forms.TextBox textBoxPassword;
         private System.Windows.Forms.TextBox textBoxServerAddress;
         private System.Windows.Forms.Button buttonApply;
+        private System.Windows.Forms.Button buttonReSync;
     }
 }
 
