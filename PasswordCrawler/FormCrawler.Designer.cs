@@ -123,6 +123,7 @@
             this.buttonReSync.TabIndex = 7;
             this.buttonReSync.Text = "再同期";
             this.buttonReSync.UseVisualStyleBackColor = true;
+            this.buttonReSync.Click += new System.EventHandler(this.buttonReSync_Click);
             // 
             // FormCrawler
             // 

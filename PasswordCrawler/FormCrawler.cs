@@ -55,5 +55,15 @@ namespace PasswordCrawler
             Properties.Settings.Default.Pop3Password = textBoxPassword.Text;
             Properties.Settings.Default.Save();
         }
+
+        private void buttonReSync_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.LastMessageID = "";
+            Properties.Settings.Default.Save();
+            if (false == backgroundWorkerCrawler.IsBusy)
+            {
+                backgroundWorkerCrawler.RunWorkerAsync();
+            }
+        }
     }
 }
