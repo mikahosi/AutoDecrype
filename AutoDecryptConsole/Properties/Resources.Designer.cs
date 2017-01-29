@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AutoDecrype.Properties {
+namespace AutoDecryptConsole.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace AutoDecrype.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("AutoDecrype.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("AutoDecryptConsole.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,42 +57,6 @@ namespace AutoDecrype.Properties {
             }
             set {
                 resourceCulture = value;
-            }
-        }
-        
-        /// <summary>
-        ///   hskn7121 に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string PopPassword {
-            get {
-                return ResourceManager.GetString("PopPassword", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   honda-sangyo.co.jp に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string PopServerAddress {
-            get {
-                return ResourceManager.GetString("PopServerAddress", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   110 に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string PopServerPort {
-            get {
-                return ResourceManager.GetString("PopServerPort", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   narita に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string PopUserID {
-            get {
-                return ResourceManager.GetString("PopUserID", resourceCulture);
             }
         }
     }

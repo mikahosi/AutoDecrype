@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AutoDecrype.Properties {
+namespace AutoDecryptConsole.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -20,6 +20,18 @@ namespace AutoDecrype.Properties {
         public static Settings Default {
             get {
                 return defaultInstance;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("%APPDATA%\\code-lab\\AutoDecrypt\\password.sqlite")]
+        public string PasswordDatabase {
+            get {
+                return ((string)(this["PasswordDatabase"]));
+            }
+            set {
+                this["PasswordDatabase"] = value;
             }
         }
     }

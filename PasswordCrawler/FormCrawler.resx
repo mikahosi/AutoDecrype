@@ -117,16 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="PopPassword" xml:space="preserve">
-    <value>hskn7121</value>
-  </data>
-  <data name="PopServerAddress" xml:space="preserve">
-    <value>honda-sangyo.co.jp</value>
-  </data>
-  <data name="PopServerPort" xml:space="preserve">
-    <value>110</value>
-  </data>
-  <data name="PopUserID" xml:space="preserve">
-    <value>narita</value>
-  </data>
+  <metadata name="backgroundWorkerCrawler.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <metadata name="timerKickCrawler.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>215, 17</value>
+  </metadata>
 </root>
