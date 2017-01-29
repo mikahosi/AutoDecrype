@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Diagnostics;
 
@@ -66,13 +67,22 @@ namespace AutoDecryptCore
                     if (LastReceivedMessageID == uids[i - 1])
                         break;
 
-                    Console.WriteLine("Download Message, {0} / {1}", i, messageCount);
-                    Message curtMessage = client.GetMessage(i);
-                    allMessages.Add(curtMessage);
+                    try
+                    {
+                        Console.WriteLine("Download Message, {0} / {1}", i, messageCount);
+                        Message curtMessage = client.GetMessage(i);
+                        allMessages.Add(curtMessage);
+                    }
+                    catch (Exception exp)
+                    {
+                        Debug.WriteLine(exp.ToString());
+                    }
                 }
+
                 LastReceivedMessageID = uids[messageCount - 1];
                 client.Disconnect();
             }
+
 
             return allMessages;
         }

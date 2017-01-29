@@ -15,6 +15,8 @@ namespace PasswordCrawler
 {
     public partial class FormCrawler : Form
     {
+        public string statusStripMessage = "";
+
         public FormCrawler()
         {
             InitializeComponent();
@@ -22,6 +24,7 @@ namespace PasswordCrawler
 
         private void backgroundWorkerCrawler_DoWork(object sender, DoWorkEventArgs e)
         {
+            statusStripMessage = "メールデータのダウンロードを開始します・・・";
             PasswordCrawlerForPop craler = new PasswordCrawlerForPop(Properties.Settings.Default.Pop3Server, Properties.Settings.Default.Pop3UserID, Properties.Settings.Default.Pop3Password);
             craler.LastReceivedMessageID = Properties.Settings.Default.LastMessageID;
             craler.PasswordDataFileName = Properties.Settings.Default.PasswordDatabase;
@@ -64,6 +67,20 @@ namespace PasswordCrawler
             {
                 backgroundWorkerCrawler.RunWorkerAsync();
             }
+        }
+
+        private void timerStatusUpdate_Tick(object sender, EventArgs e)
+        {
+            toolStripStatusMessage.Text = statusStripMessage;
+        }
+
+        private void backgroundWorkerCrawler_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+        }
+
+        private void backgroundWorkerCrawler_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            statusStripMessage = "メールデータのダウンロードが終わりました・・・";
         }
     }
 }

@@ -22,12 +22,17 @@ namespace AutoDecryptConsole
             string pathname = Environment.ExpandEnvironmentVariables(Properties.Settings.Default.PasswordDatabase);
             DecryptPasswordDatabase passwordData = new DecryptPasswordDatabase(pathname);
             List<string> passwordList = passwordData.GetPasswordList();
+            Console.WriteLine("Load Passwords Count = {0}", passwordList.Count);
 
             ZipFilePasswordScanner passwordScan = new ZipFilePasswordScanner(args[0], passwordList.ToArray());
             if (passwordScan.isEncrypted())
             {
                 string truePassword = passwordScan.SearchTruePassword();
+                Console.WriteLine("Detect Password = {0}", truePassword);
+
                 string exportPath = passwordScan.Decode(truePassword);
+                Console.WriteLine("Exported Encrypt File = {0}", exportPath);
+
                 System.Diagnostics.Process.Start(exportPath);
 
             }

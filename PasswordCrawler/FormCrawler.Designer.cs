@@ -39,11 +39,17 @@
             this.textBoxServerAddress = new System.Windows.Forms.TextBox();
             this.buttonApply = new System.Windows.Forms.Button();
             this.buttonReSync = new System.Windows.Forms.Button();
+            this.statusStripBar = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusMessage = new System.Windows.Forms.ToolStripStatusLabel();
+            this.timerStatusUpdate = new System.Windows.Forms.Timer(this.components);
+            this.statusStripBar.SuspendLayout();
             this.SuspendLayout();
             // 
             // backgroundWorkerCrawler
             // 
             this.backgroundWorkerCrawler.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerCrawler_DoWork);
+            this.backgroundWorkerCrawler.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorkerCrawler_ProgressChanged);
+            this.backgroundWorkerCrawler.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorkerCrawler_RunWorkerCompleted);
             // 
             // timerKickCrawler
             // 
@@ -107,7 +113,7 @@
             // 
             // buttonApply
             // 
-            this.buttonApply.Location = new System.Drawing.Point(297, 91);
+            this.buttonApply.Location = new System.Drawing.Point(297, 94);
             this.buttonApply.Name = "buttonApply";
             this.buttonApply.Size = new System.Drawing.Size(75, 23);
             this.buttonApply.TabIndex = 6;
@@ -117,7 +123,7 @@
             // 
             // buttonReSync
             // 
-            this.buttonReSync.Location = new System.Drawing.Point(14, 91);
+            this.buttonReSync.Location = new System.Drawing.Point(14, 94);
             this.buttonReSync.Name = "buttonReSync";
             this.buttonReSync.Size = new System.Drawing.Size(75, 23);
             this.buttonReSync.TabIndex = 7;
@@ -125,11 +131,34 @@
             this.buttonReSync.UseVisualStyleBackColor = true;
             this.buttonReSync.Click += new System.EventHandler(this.buttonReSync_Click);
             // 
+            // statusStripBar
+            // 
+            this.statusStripBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusMessage});
+            this.statusStripBar.Location = new System.Drawing.Point(0, 128);
+            this.statusStripBar.Name = "statusStripBar";
+            this.statusStripBar.Size = new System.Drawing.Size(384, 22);
+            this.statusStripBar.TabIndex = 8;
+            this.statusStripBar.Text = "statusStrip1";
+            // 
+            // toolStripStatusMessage
+            // 
+            this.toolStripStatusMessage.Name = "toolStripStatusMessage";
+            this.toolStripStatusMessage.Size = new System.Drawing.Size(130, 17);
+            this.toolStripStatusMessage.Text = "toolStripStatusMessage";
+            // 
+            // timerStatusUpdate
+            // 
+            this.timerStatusUpdate.Enabled = true;
+            this.timerStatusUpdate.Interval = 500;
+            this.timerStatusUpdate.Tick += new System.EventHandler(this.timerStatusUpdate_Tick);
+            // 
             // FormCrawler
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(384, 125);
+            this.ClientSize = new System.Drawing.Size(384, 150);
+            this.Controls.Add(this.statusStripBar);
             this.Controls.Add(this.buttonReSync);
             this.Controls.Add(this.buttonApply);
             this.Controls.Add(this.textBoxServerAddress);
@@ -141,6 +170,8 @@
             this.Name = "FormCrawler";
             this.Text = "Password Crawler";
             this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
+            this.statusStripBar.ResumeLayout(false);
+            this.statusStripBar.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -157,6 +188,9 @@
         private System.Windows.Forms.TextBox textBoxServerAddress;
         private System.Windows.Forms.Button buttonApply;
         private System.Windows.Forms.Button buttonReSync;
+        private System.Windows.Forms.StatusStrip statusStripBar;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusMessage;
+        private System.Windows.Forms.Timer timerStatusUpdate;
     }
 }
 
