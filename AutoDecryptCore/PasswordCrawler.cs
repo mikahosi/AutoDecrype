@@ -79,7 +79,7 @@ namespace AutoDecryptCore
 
             if (hasSymbolChar)
             {
-                if (false == Regex.IsMatch(srceToken, "[!\"#$%&'()=~|@`\\[{:\\*\\]};+\\-\\^,\\./\\\\\\<\\>?_]"))
+                if (false == Regex.IsMatch(srceToken, "[!-/:-@≠\\[-`{-~]"))
                 {
                     return false;
                 }
@@ -97,7 +97,7 @@ namespace AutoDecryptCore
         {
             List<string> resultTokens = new List<string>();
 
-            var matchTokens = Regex.Matches(srceText, "[0-9a-zA-Z!\"#$%&'()=~|@`\\[{:\\*\\]};\\+,\\./\\\\\\<\\>\\?\\-_]+");
+            var matchTokens = Regex.Matches(srceText, "[!-~]+");
             foreach (Match token in matchTokens)
             {
                 resultTokens.Add(token.Value);
