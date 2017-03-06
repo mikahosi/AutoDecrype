@@ -30,11 +30,18 @@ namespace AutoDecryptConsole
                 string truePassword = passwordScan.SearchTruePassword();
                 Console.WriteLine("Detect Password = {0}", truePassword);
 
-                string exportPath = passwordScan.Decode(truePassword);
-                Console.WriteLine("Exported Encrypt File = {0}", exportPath);
+                if (truePassword != "")
+                {
+                    string exportPath = passwordScan.Decode(truePassword);
+                    Console.WriteLine("Exported Encrypt File = {0}", exportPath);
 
+                    System.Diagnostics.Process.Start(exportPath);
+                }
+            }
+            else
+            {
+                string exportPath = passwordScan.Decode("");
                 System.Diagnostics.Process.Start(exportPath);
-
             }
         }
     }
